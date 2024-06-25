@@ -88,8 +88,6 @@ int main() {
 								// TODO: dont want to update bounds each frame
 		window.clear(sf::Color::Cyan);
 		window.draw(player);
-		window.draw(bar1);
-		window.draw(bar2);
 		obj->draw();
 		score += 1; // each frame you survive, you gain a point
 
