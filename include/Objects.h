@@ -21,7 +21,12 @@ namespace physics {
 
 		bool isCollisionLeftWall();
 
-		void move(float speed, float height);
+		void move();
+
+		void Object::setSpeed(float speed);
+		
+		void Object::setHeight(float height);
+
 
 		void draw();
 		sf::FloatRect _objBound;

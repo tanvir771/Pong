@@ -2,7 +2,7 @@
 
 namespace physics {
 	Object::Object(sf::RenderWindow& owner, float sizeX, float sizeY)
-		: _objMovingSpeed{ 0.f }, _objVerticalHeight{ 0.f }, _obj{ (sf::Vector2f(sizeX, sizeY)) }, _owner{ owner }
+		: _objMovingSpeed{ -1.f }, _objVerticalHeight{ 0.f }, _obj{ (sf::Vector2f(sizeX, sizeY)) }, _owner{ owner }
 	{
 		_objBound = _obj.getGlobalBounds();
 	};
@@ -11,6 +11,15 @@ namespace physics {
 	{
 		_obj.setPosition(x, y);
 	}
+
+	void Object::setSpeed(float speed) {
+		_objMovingSpeed = speed;
+	}
+
+	void Object::setHeight(float height) {
+		_objVerticalHeight = height;
+	}
+
 	bool Object::getCollision(sf::RectangleShape anotherObj)
 	{
 		sf::FloatRect anotherObjBound = anotherObj.getGlobalBounds();
@@ -40,9 +49,9 @@ namespace physics {
 		return (_objBound.left < 0);
 	}
 
-	void Object::move(float speed, float height)
+	void Object::move()
 	{
-		_obj.move(speed, height);
+		_obj.move(_objMovingSpeed, _objVerticalHeight);
 	}
 
 	void Object::draw()

@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+void createObjects(sf::RenderWindow& window, std::vector<std::shared_ptr<physics::Object>>& objects);
+
 int main() {
 	sf::RenderWindow window;
 
@@ -20,14 +22,20 @@ int main() {
 	player.setPosition(10.f, 50.f);
 	player.move(5.f, 5.f);
 
-
 	//sf::RectangleShape object(sf::Vector2f(20.f, 20.f));
 	//object.setPosition(750, 300);
 
-	std::vector<sf::RectangleShape> objects{};
+	sf::RectangleShape bar(sf::Vector2f(20.f, 100.f));
+	bar.setPosition(780, 250);
+	bar.setFillColor(sf::Color::Black);
 
-	std::unique_ptr<physics::Object> obj = std::make_unique<physics::Object>(window, 20.f, 20.f);
-	obj->setPos(750, 300);
+	int objNumber = 1; 
+
+	std::vector<std::shared_ptr<physics::Object>> objects{};
+
+	createObjects(window, objects);
+
+
 	// set the shape color to green
 	player.setFillColor(sf::Color(100, 250, 50));
 
@@ -66,36 +74,58 @@ int main() {
 
 		}
 
-		if (obj->getCollision(player)) {
-			objSpeed *= -1.25f;
-			objHeight = (rand() % 3) - 3;
-		}
 
-		if (obj->isCollisionRightWall()) {
-			objSpeed *= -1.f;
-		}
-
-		if (obj->isCollisionUpperWall() || obj->isCollisionLowerWall()) {
-			objHeight *= -1.f;
-		}
-
-		if (obj->isCollisionLeftWall()) {
-			window.close();
-		}
-
-		obj->move(objSpeed, objHeight);
-		obj->updateObjBounds();	// recalculates the position and updates the objBound with it
-								// TODO: dont want to update bounds each frame
 		window.clear(sf::Color::Cyan);
 		window.draw(player);
-		obj->draw();
+		
+
+		for (std::shared_ptr<physics::Object> obj : objects) {
+			
+			obj->updateObjBounds();	// recalculates the position and updates the objBound with it
+									// TODO: dont want to update bounds each frame
+			if (obj->getCollision(player)) {
+				objSpeed *= -1.25f;
+				objHeight = (rand() % 3) - 3;
+				obj->setSpeed(objSpeed);
+				obj->setHeight(objHeight);
+			}
+
+			if (obj->isCollisionRightWall()) {
+				objSpeed *= -1.f;
+				obj->setSpeed(objSpeed);
+			}
+
+			if (obj->isCollisionUpperWall() || obj->isCollisionLowerWall()) {
+				objHeight *= -1.f;
+				obj->setHeight(objHeight);
+			}
+
+			if (obj->isCollisionLeftWall()) {
+				window.close();
+			}
+			obj->move();
+			obj->draw();
+
+		}
+
 		score += 1; // each frame you survive, you gain a point
 
 
+		if (score % 1500 == 0) {
+			createObjects(window, objects);
+		}
+
 		text.setString(std::to_string(score));
 		window.draw(text);
+		window.draw(bar);
 		window.display();
 	}
 
 	return 0;
+}
+
+void createObjects(sf::RenderWindow& window, std::vector<std::shared_ptr<physics::Object>>& objects) {
+	std::shared_ptr<physics::Object> obj = std::make_shared<physics::Object>(window, 20.f, 20.f);
+	obj->setPos(750, 300);
+	objects.push_back(obj);
 }
