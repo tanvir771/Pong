@@ -5,13 +5,13 @@
 namespace physics {
 	class Object {
 	public:
-		Object(sf::RenderWindow owner, float sizeX, float sizeY)
-			: _objMovingSpeed{ 0.f }, _objVerticalHeight{ 0.f }, _obj{ (sf::Vector2f(sizeX, sizeY)) }, _owner(owner)
-		{};
+		Object(sf::RenderWindow& owner, float sizeX, float sizeY);
 
 		void setPos(float x, float y);
 
 		bool getCollision(sf::RectangleShape anotherObj);
+
+		void updateObjBounds();
 
 		bool isCollisionUpperWall();
 
@@ -21,8 +21,13 @@ namespace physics {
 
 		bool isCollisionLeftWall();
 
+		void move(float speed, float height);
+
+		void draw();
+		sf::FloatRect _objBound;
+
 	private:
-		sf::RenderWindow _owner;
+		sf::RenderWindow& _owner;
 		sf::RectangleShape _obj;
 
 		float _objMovingSpeed;
