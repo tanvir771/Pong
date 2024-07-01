@@ -3,6 +3,7 @@
     <h1>Pong Game</h1>
     <p>Welcome to my simple yet engaging Pong game project! This project is built using SFML (Simple and Fast Multimedia Library) and C++, offering a classic arcade experience with a twist.</p>
     <h2>Features</h2>
+    ![Gameplay](https://github.com/tanvir771/Pong/assets/39839680/adf8cf85-2595-47bc-8397-06536c8348ff)
     <ul>
         <li><strong>Player Control:</strong> Use the arrow keys to move your paddle up and down.</li>
         <li><strong>Dynamic Bar:</strong> A bar moves across the screen, changing position and size when objects collide with it.</li>
