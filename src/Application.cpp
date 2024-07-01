@@ -22,10 +22,9 @@ int main() {
 	player.setPosition(10.f, 50.f);
 	player.move(5.f, 5.f);
 
-	//sf::RectangleShape object(sf::Vector2f(20.f, 20.f));
-	//object.setPosition(750, 300);
-
-	sf::RectangleShape bar(sf::Vector2f(20.f, 100.f));
+	float barXSize = 20.f;
+	float barYSize = 100.f;
+	sf::RectangleShape bar(sf::Vector2f(barXSize, barYSize));
 	bar.setPosition(780, 250);
 	bar.setFillColor(sf::Color::Black);
 
@@ -54,9 +53,6 @@ int main() {
 	text.setStyle(sf::Text::Bold);
 	text.setPosition(650, 30);
 
-	float objSpeed = -1.f;
-	float objHeight = 0.f;
-
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -77,27 +73,39 @@ int main() {
 
 		window.clear(sf::Color::Cyan);
 		window.draw(player);
-		
+
+		std::vector<std::shared_ptr<physics::Object>> objectsToRemove;
 
 		for (std::shared_ptr<physics::Object> obj : objects) {
-			
+
+			float objSpeed = -1.f;
+			float objHeight = 0.f;
+
 			obj->updateObjBounds();	// recalculates the position and updates the objBound with it
 									// TODO: dont want to update bounds each frame
 			if (obj->getCollision(player)) {
-				objSpeed *= -1.25f;
-				objHeight = (rand() % 3) - 3;
-				obj->setSpeed(objSpeed);
-				obj->setHeight(objHeight);
+				obj->increaseSpeed(1.25f);
+				obj->reverseHorizontalDirection();
+				obj->increaseVerticalHeight((rand() % 3) - 3);
+			}
+
+			if (obj->getCollision(bar)) {
+				objectsToRemove.push_back(obj);
+				bar.move(0, (rand() % 200) - 200);
+				barYSize -= 1;
+				if (barYSize <= 0) {
+					window.close();
+				}
+				bar.setSize(sf::Vector2f(barXSize, barYSize));
+				continue;
 			}
 
 			if (obj->isCollisionRightWall()) {
-				objSpeed *= -1.f;
-				obj->setSpeed(objSpeed);
+				obj->reverseHorizontalDirection();
 			}
 
 			if (obj->isCollisionUpperWall() || obj->isCollisionLowerWall()) {
-				objHeight *= -1.f;
-				obj->setHeight(objHeight);
+				obj->reverseVerticalDirection();
 			}
 
 			if (obj->isCollisionLeftWall()) {
@@ -108,10 +116,15 @@ int main() {
 
 		}
 
+		// Remove objects that collided with the bar
+		for (const auto& obj : objectsToRemove) {
+			objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());
+		}
+
 		score += 1; // each frame you survive, you gain a point
 
 
-		if (score % 1500 == 0) {
+		if (score % 700 == 0) {
 			createObjects(window, objects);
 		}
 

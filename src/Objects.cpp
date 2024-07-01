@@ -54,9 +54,29 @@ namespace physics {
 		_obj.move(_objMovingSpeed, _objVerticalHeight);
 	}
 
+	void Object::increaseSpeed(float factor)
+	{
+		_objMovingSpeed *= factor;
+	}
+
 	void Object::draw()
 	{
 		_owner.draw(_obj);
+	}
+
+	void Object::increaseVerticalHeight(float amount)
+	{
+		this->setHeight(amount);
+	}
+
+	void Object::reverseHorizontalDirection()
+	{
+		_objMovingSpeed *= -1.f;
+	}
+
+	void Object::reverseVerticalDirection()
+	{
+		_objVerticalHeight *= -1.f;
 	}
 
 }

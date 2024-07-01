@@ -23,10 +23,17 @@ namespace physics {
 
 		void move();
 
-		void Object::setSpeed(float speed);
+		void setSpeed(float speed);
 		
-		void Object::setHeight(float height);
+		void setHeight(float height);
+		
+		void increaseSpeed(float factor);
 
+		void increaseVerticalHeight(float amount);
+
+		void reverseHorizontalDirection();
+
+		void reverseVerticalDirection();
 
 		void draw();
 		sf::FloatRect _objBound;
