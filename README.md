@@ -20,7 +20,7 @@ cd pong-game</code></pre>
             <ul>
                 <li>Set up your development environment (CMake).</li>
                 <li>Create a build folder</li>
-                <li>Navigate to build folder, and type in <pre><code>cmake -S .. -B ."</li>
+                <li>Navigate to build folder, and type in <pre><code>cmake -S .. -B .</code></pre></li>
                 <li>Open Visual Studio Solution and hit Build</li>
                 <li>Enjoy :)</li>
             </ul>
