@@ -20,10 +20,16 @@ namespace physics {
 		_objVerticalHeight = height;
 	}
 
-	bool Object::getCollision(sf::RectangleShape anotherObj)
+	bool Object::getCollision(std::shared_ptr<Object> anotherObj)
 	{
-		sf::FloatRect anotherObjBound = anotherObj.getGlobalBounds();
-		return _objBound.intersects(anotherObjBound);
+		anotherObj->updateObjBounds();
+		return _objBound.intersects(anotherObj->_objBound);
+	}
+
+	bool Object::getCollision(sf::RectangleShape& anotherObj)
+	{
+		sf::FloatRect anotherObjBounds = anotherObj.getGlobalBounds();
+		return _objBound.intersects(anotherObjBounds);
 	}
 
 	void Object::updateObjBounds()

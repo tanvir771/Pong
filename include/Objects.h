@@ -3,13 +3,17 @@
 #include <SFML/Graphics.hpp>
 
 namespace physics {
+	class Player;
+
 	class Object {
 	public:
 		Object(sf::RenderWindow& owner, float sizeX, float sizeY);
 
 		void setPos(float x, float y);
 
-		bool getCollision(sf::RectangleShape anotherObj);
+		bool getCollision(std::shared_ptr<Object> anotherObj);
+
+		bool getCollision(sf::RectangleShape& anotherObj);
 
 		void updateObjBounds();
 
@@ -38,7 +42,7 @@ namespace physics {
 		void draw();
 		sf::FloatRect _objBound;
 
-	private:
+	protected:
 		sf::RenderWindow& _owner;
 		sf::RectangleShape _obj;
 

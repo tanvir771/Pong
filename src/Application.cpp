@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "Objects.h"
+#include "Player.h"
 
 #include <iostream>
 
@@ -18,9 +19,10 @@ int main() {
 	window.create(sf::VideoMode(800, 600), "New Window", sf::Style::Close);
 	window.setVerticalSyncEnabled(true); // call it once, after creating the window
 
-	sf::RectangleShape player(sf::Vector2f(20.f, 100.f));;
-	player.setPosition(10.f, 50.f);
-	player.move(5.f, 5.f);
+	//sf::RectangleShape player(sf::Vector2f(20.f, 100.f));;
+	//player.setPosition(10.f, 50.f);
+	
+	std::shared_ptr<game::Player> player = std::make_shared<game::Player>(window, 20.f, 100.f, sf::Color(100, 250, 50));
 
 	float barXSize = 20.f;
 	float barYSize = 100.f;
@@ -36,7 +38,7 @@ int main() {
 
 
 	// set the shape color to green
-	player.setFillColor(sf::Color(100, 250, 50));
+	//player.setFillColor(sf::Color(100, 250, 50));
 
 
 	int score = 0;
@@ -61,18 +63,17 @@ int main() {
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-				player.move(0, -10.f);
+				player->moveUp();
 			}
 
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-				player.move(0, 10.f);
+				player->moveDown();
 			}
 
 		}
 
-
 		window.clear(sf::Color::Cyan);
-		window.draw(player);
+		player->draw();
 
 		std::vector<std::shared_ptr<physics::Object>> objectsToRemove;
 
@@ -83,6 +84,7 @@ int main() {
 
 			obj->updateObjBounds();	// recalculates the position and updates the objBound with it
 									// TODO: dont want to update bounds each frame
+
 			if (obj->getCollision(player)) {
 				obj->increaseSpeed(1.25f);
 				obj->reverseHorizontalDirection();

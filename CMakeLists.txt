@@ -29,6 +29,9 @@ add_executable(${PONG_TARGET_NAME}
 	
 	${CMAKE_CURRENT_SOURCE_DIR}/src/Objects.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/include/Objects.h
+
+	${CMAKE_CURRENT_SOURCE_DIR}/src/Player.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/include/Player.h
 )
 
 target_include_directories(${PONG_TARGET_NAME} PUBLIC
