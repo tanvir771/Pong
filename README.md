@@ -1,6 +1,5 @@
 # Pong - Arcade
 <body>
-    <h1>Pong Game</h1>
     <p>Welcome to my simple yet engaging Pong game project! This project is built using SFML (Simple and Fast Multimedia Library) and C++, offering a classic arcade experience with a twist.</p>
     <img src="./Gameplay.gif" alt="Gameplay GIF"/>
     <h2>Features</h2>
