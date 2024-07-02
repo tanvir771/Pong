@@ -36,12 +36,7 @@ int main() {
 
 	createObjects(window, objects);
 
-
-	// set the shape color to green
-	//player.setFillColor(sf::Color(100, 250, 50));
-
-
-	int score = 0;
+	signed int score = 0;
 
 	sf::Font font;
 	if (!font.loadFromFile("E:\\Visual Studio Projects\\Project_Pong\\src\\Playground.ttf")) {
@@ -93,7 +88,8 @@ int main() {
 
 			if (obj->getCollision(bar)) {
 				objectsToRemove.push_back(obj);
-				bar.move(0, (rand() % 200) - 200);
+				score += 500;
+				bar.move(0, (rand() % 301) - 150);
 				barYSize -= 1;
 				if (barYSize <= 0) {
 					window.close();
@@ -111,7 +107,9 @@ int main() {
 			}
 
 			if (obj->isCollisionLeftWall()) {
-				window.close();
+				score -= 500;
+				objectsToRemove.push_back(obj);
+				continue;
 			}
 			obj->move();
 			obj->draw();
